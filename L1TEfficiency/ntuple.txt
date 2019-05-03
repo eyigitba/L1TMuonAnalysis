@@ -1,0 +1,1 @@
+/eos/cms/store/group/dpg_trigger/comm_trigger/L1Trigger/treis/l1t-integration-i100p0-CMSSW-1021/SingleMuon/crab_l1t-integration-i100p0-CMSSW-1021__SingleMuon_Run2018A-ZMu-PromptReco-v1/180824_110238/0000/L1Ntuple_1.root

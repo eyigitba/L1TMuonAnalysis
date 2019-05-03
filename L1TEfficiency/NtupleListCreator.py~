@@ -1,0 +1,23 @@
+import fileinput
+import os.path, subprocess, sys
+import re
+
+if __name__ == "__main__":
+ from optparse import OptionParser
+ parser = OptionParser()
+ parser.add_option("-i","--init_path", dest="path",   default="",   type="string",    help=" full path of files ")
+ parser.add_option("-o","--output", dest="name", default="ntuple.txt", type="string", help="output txt name")
+ parser.add_option("-m","--maxfiles", dest="maxfiles", default=-1, type=int, help="max number of files to run on")
+ (options, args) = parser.parse_args()
+ outlines=""; count=0;
+ for dirpath, dirnames, filenames in os.walk(options.path):
+  for filename in [f for f in filenames if f.endswith(".root")]:
+     outlines+=os.path.join(dirpath,filename)+"\n"
+     if options.maxfiles!=-1 and count>options.maxfiles:
+        break
+     count+=1
+
+ with open(options.name, 'w') as fl:
+    fl.write(outlines)
+ fl.close()
+
