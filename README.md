@@ -27,5 +27,6 @@ To run efficiency locally use the RunEfficiency.py. Usage for Tag & Probe method
     - use SubmitEfficiencyCondor.py. The same options that are implemented for the local run, are also implemented for condor run. In addition there are two more flags:
       - n: number of files per condor 
       - f: condor flavour 
+    - example: python ubmitEfficiencyCondor.py -n number of files / job -f flavour -i txt with ntuple paths -o path to save slimmed ntuples --probeCuts txt with probe muon cuts --tagCuts tag muon cuts
 
 
