@@ -1,4 +1,12 @@
-bmtf:pt_probe:fabs(eta_probe)<0.83:DR_l1probe<0.3 && pt_l1probe>22:p_{T}:150:0:300:c10:LineColor=7:YTitle=l1 muon
-#:omtf:pt_probe:fabs(eta_probe)>0.83 && fabs(eta_probe)<1.24:DR_l1probe<0.3 && pt_l1probe>22:p_{T}:150:0:300:c10
-#:emtf:pt_probe:fabs(eta_probe)>1.24 && fabs(eta_probe)<2.4:DR_l1probe<0.3 && pt_l1probe>22:p_{T}:150:0:300:c10
+#:instructions to comment use "#:" at the beggining of the line
+#:title:variable:denominator cuts:numerator EXTRA cuts:labelX:bins:start:end:canvas name: after that point optional configuration
+
+l1muon:pt_probe:fabs(eta_probe)<2.4:DR_l1probe<0.3 && pt_l1probe>15:p_{T}:50:0:50:c11
+
+#:bmtf:pt_probe:fabs(eta_probe)<0.83:DR_l1probe<0.3 && pt_l1probe>22:p_{T}:50:0:50:c10
+
+#:omtf:pt_probe:fabs(eta_probe)>0.83 && fabs(eta_probe)<1.24:DR_l1probe<0.3 && pt_l1probe>22:p_{T}:50:0:50:c10
+
+#:emtf:pt_probe:fabs(eta_probe)>1.24 && fabs(eta_probe)<2.4:DR_l1probe<0.3 && pt_l1probe>22:p_{T}:50:0:50:c10
+
 #:instructions to comment use "#:" at the beggining of the line

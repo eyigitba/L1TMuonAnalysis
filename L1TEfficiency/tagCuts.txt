@@ -1,4 +1,5 @@
-#####Tag Muon Cuts#######
+################# Author: George Karathanasis ##############################
+#######################Tag Muon Cuts#######################################
 ####comments start with "#" in a separate line e.g.
 #comment
 MinEta=0

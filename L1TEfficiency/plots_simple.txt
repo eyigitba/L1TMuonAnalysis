@@ -1,1 +1,5 @@
-test:muonEt:None:data-emu:p_{T}:150:0:300:c10
+#:usage plot 
+data:muonEt:None:data:p_{T}:50:0:100:c10:Rate=1000,90
+emu:muonEt:None:emu:p_{T}:50:0:100:c10:Rate=1000,90
+dataeta:muonEta:None:data:#eta:50:-2.4:2.4:c11:Norm:leg=data
+emueta:muonEta:None:emu:#eta:50:-2.4:2.4:c11:Norm:leg=emu

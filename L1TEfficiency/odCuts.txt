@@ -1,7 +1,6 @@
 ########## Orthogonal Dataset Cuts #########
-####comments start with "#" in a separate line e.g.
-#comment
+####comments start with "#" in a separate line e.g. <enter> #comment
+#do not leave spaces between values
 MinEta=0
 MaxEta=2.4
 MaxHLTIso=100
-

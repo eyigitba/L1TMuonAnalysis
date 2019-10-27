@@ -1,3 +1,8 @@
+# L1T Analysis Package 
+# Author: George Karathanasis, georgios.karathanasis@cern.ch
+# Date: 5/2019
+#
+
 import fileinput
 import os.path, subprocess, sys
 import re

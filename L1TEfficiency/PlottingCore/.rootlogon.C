@@ -1,0 +1,31 @@
+{
+
+ TStyle* mcStyle = new TStyle("mcStyle","GK Root Styles");
+ mcStyle->SetPalette(1,0); 
+ mcStyle->SetLineWidth(3);
+ mcStyle->SetOptStat(0); 
+ mcStyle->SetOptTitle(0);
+ mcStyle->SetOptDate(0);
+ mcStyle->SetLabelSize(0.03,"xyz"); 
+ mcStyle->SetTitleSize(0.05,"xyz");
+ mcStyle->SetLabelFont(22,"xyz");
+ mcStyle->SetTitleOffset(1.2,"y");
+ mcStyle->SetTitleOffset(0.8,"x");
+ mcStyle->SetCanvasDefW(700); 
+ mcStyle->SetCanvasDefH(700); 
+ mcStyle->SetCanvasColor(0);
+ mcStyle->SetCanvasBorderMode(0);
+ mcStyle->SetCanvasBorderSize(0);
+ mcStyle->SetPadBottomMargin(0.1);
+ mcStyle->SetPadTopMargin(0.1); 
+ mcStyle->SetPadLeftMargin(0.1); 
+ mcStyle->SetPadRightMargin(0.1);
+ mcStyle->SetPadGridX(1); 
+ mcStyle->SetPadGridY(1);
+ mcStyle->SetPadTickX(1);
+ mcStyle->SetPadTickY(1);
+ mcStyle->SetFrameBorderMode(0);
+ mcStyle->SetPaperSize(20,24);
+ gROOT->SetStyle("mcStyle");
+ return; 
+}

@@ -1,2 +1,0 @@
-#bmtf:pt_probe:DR_l1probe<0.3 && pt_l1probe>22 && fabs(eta_probe)<0.8:#eta:50:0:100:NUM
-#bmtf2:pt_probe:fabs(eta_probe)<0.8:p_{T}:50:0:100:DEN
