@@ -8,8 +8,8 @@ This code provides algorithms for analysis on L1 muons. Currently implemented:
   
 # Instalation
 In a CMSSW folder copy this package:
-cd ${CMSSW_BASE}/src
-git clone https://github.com/gkaratha/L1TMuonAnalysis
+  cd ${CMSSW_BASE}/src
+  git clone https://github.com/gkaratha/L1TMuonAnalysis
 
 
 # Efficiency
