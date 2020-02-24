@@ -21,6 +21,8 @@
 #include "TTreeReader.h"
 #include "TTreeReaderValue.h"
 #include "TTreeReaderArray.h"
+#include "muon_class.h"
+
 
 float global_eta(float local_eta){
 return local_eta*0.010875;
