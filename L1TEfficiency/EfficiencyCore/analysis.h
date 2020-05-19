@@ -33,7 +33,7 @@ float global_phi(float emu_phi){
         float temp=emu_phi/576*6.28-3.14*15/180;
         if (temp>3.14) temp=temp-6.28;
         return temp;
-        }
+}
 
 
 float DPhi(double phi1,double phi2){
@@ -61,6 +61,17 @@ std::vector<std::pair<int,float>>  RecoL1tag_Pair(TTreeReaderArray<short>& l1bx,
    if (l1bx[i]!=0) continue;
    if (l1qual[i]<qual) continue;
    std::pair<int,float> temp(i,matchDR(etareco,phireco,l1eta[i],l1phi[i]));
+   pairs.push_back(temp);
+  }
+  return pairs;
+}
+
+std::vector<std::pair<int,float>>  RecoTFtag_Pair(std::vector<short> l1bx,std::vector<short> l1qual,unsigned short qual,float etareco,float phireco,std::vector<short> l1eta,std::vector<short> l1phi){
+  std::vector<std::pair<int,float>> pairs;
+  for(unsigned int i=0; i<l1bx.size(); i++){
+   if (l1bx[i]!=0) continue;
+   if (l1qual[i]<qual) continue;
+   std::pair<int,float> temp(i,matchDR(etareco,phireco,global_eta(static_cast<float>(l1eta[i])),global_phi(static_cast<float>(l1phi[i]))));
    pairs.push_back(temp);
   }
   return pairs;

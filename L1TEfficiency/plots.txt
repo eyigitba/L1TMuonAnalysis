@@ -1,12 +1,28 @@
 #:instructions to comment use "#:" at the beggining of the line
 #:title:variable:denominator cuts:numerator EXTRA cuts:labelX:bins:start:end:canvas name: after that point optional configuration
 
-l1muon:pt_probe:fabs(eta_probe)<2.4:DR_l1probe<0.3 && pt_l1probe>15:p_{T}:50:0:50:c11
+l1muonpt:pt_probe:fabs(eta_probe)>1.24 && fabs(eta_probe)<2.4:DR_l1probe<0.6 && qual_l1probe > 11 && pt_l1probe>20:RECO p_{T}:50:0:100:l1_plot
 
-#:bmtf:pt_probe:fabs(eta_probe)<0.83:DR_l1probe<0.3 && pt_l1probe>22:p_{T}:50:0:50:c10
+l1muoneta:eta_probe:fabs(eta_probe)>1.24 && fabs(eta_probe)<2.4:DR_l1probe<0.6 && qual_l1probe > 11 && pt_l1probe>20:RECO #eta:10:-2.5:2.5:l1_plot_eta
 
-#:omtf:pt_probe:fabs(eta_probe)>0.83 && fabs(eta_probe)<1.24:DR_l1probe<0.3 && pt_l1probe>22:p_{T}:50:0:50:c10
+#:bmtf:pt_probe:fabs(eta_probe)<0.83:DR_l1probe<0.6 && pt_l1probe>22:p_{T}:20:0:100:c10
 
-#:emtf:pt_probe:fabs(eta_probe)>1.24 && fabs(eta_probe)<2.4:DR_l1probe<0.3 && pt_l1probe>22:p_{T}:50:0:50:c10
+#:omtf:pt_probe:fabs(eta_probe)>0.83 && fabs(eta_probe)<1.24:DR_l1probe<0.6 && pt_l1probe>22:p_{T}:50:0:50:c10
+
+#:emtf:pt_probe:fabs(eta_probe)>1.24 && fabs(eta_probe)<2.4 && qual_l1probe > 10:DR_l1probe<0.6 && pt_l1probe>20:p_{T} [GeV]:20:0:100:emtf_plot
+
+#:emtfeta:eta_probe:fabs(eta_probe)>1.24 && fabs(eta_probe)<2.4 && qual_l1probe > 10:DR_l1probe<0.6 && pt_l1probe>20:#eta:24:-2.4:2.4:emtf_plot_eta
+
+#:emtfphipos:phi_probe:eta_probe>1.24 && eta_probe<2.4 && qual_l1probe > 10:DR_l1probe<0.6 && pt_l1probe>20:#phi:24:-3.2:3.2:emtf_plot_phipos
+
+#:emtfphineg:phi_probe:eta_probe<-1.24 && eta_probe>-2.4 && qual_l1probe > 10:DR_l1probe<0.6 && pt_l1probe>20:#phi:24:-3.2:3.2:emtf_plot_phineg
+
+#:emtfptpos:pt_probe:eta_probe>1.24 && eta_probe<2.4 && qual_l1probe > 10:DR_l1probe<0.6 && pt_l1probe>20:p_{T} [GeV]:20:0:100:emtf_plot_ptpos
+
+#:emtfptneg:pt_probe:eta_probe<-1.24 && eta_probe>-2.4 && qual_l1probe > 10:DR_l1probe<0.6 && pt_l1probe>20:p_{T} [GeV]:20:0:100:emtf_plot_ptneg
 
 #:instructions to comment use "#:" at the beggining of the line
+
+#:l1muonpt:pt_probe:fabs(eta_probe)>1.24 && fabs(eta_probe)<2.4:DR_l1probe<0.6 && qual_l1probe > 11 && pt_l1probe>20:p_{T}:50:0:100:l1_plot
+
+#:l1muoneta:eta_probe:fabs(eta_probe)>1.24 && fabs(eta_probe)<2.4:DR_l1probe<0.6 && qual_l1probe > 11 && pt_l1probe>20:#eta:10:-2.5:2.5:l1_plot_eta

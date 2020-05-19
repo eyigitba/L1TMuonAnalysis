@@ -13,7 +13,7 @@
 #include "TLatex.h"
 
 
-TLatex cms(){
+TLatex cms_latex(){
   TLatex cms_label;
   cms_label.SetTextSize(0.04);
   cms_label.DrawLatexNDC(0.16, 0.92, "#bf{ #font[22]{CMS} #font[72]{Preliminary}}");
@@ -44,8 +44,9 @@ int plotSimple( std::string plots, TString ntuple,TString path){
 
   TChain * ccdata=new TChain("l1UpgradeTree/L1UpgradeTree");
   TChain * ccemu=new TChain("l1UpgradeEmuTree/L1UpgradeTree");
-  ccdata->Add(ntuple+"/*.root"); 
-  ccemu->Add(ntuple+"/*.root");
+  cout << "ntuple" << ntuple << endl;
+  ccdata->Add(ntuple); 
+  ccemu->Add(ntuple);
 
   gStyle->SetOptStat(0); 
   std::string line;
@@ -182,8 +183,9 @@ int plotSimple( std::string plots, TString ntuple,TString path){
    TCanvas * c1=new TCanvas(canvasname[i],canvasname[i],700,700);
    hplot[i]->Draw("E1");
    hplot[i]->SetLineWidth(3); 
+   hplot[i]->SetLineColor(2); 
 
-   TLatex cms_label=cms();
+   TLatex cms_label=cms_latex();
    TLatex header=head();
    if (kwds[i]!=""){
      cout<<kwds[i]<<endl;

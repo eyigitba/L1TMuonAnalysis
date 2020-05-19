@@ -4,8 +4,8 @@
 #comment
 #Mll is invariant mass of probe & tag muon. To deactivate put minmll to 0 and max to 1000. 
 #Max DR can also be added but is better to apply it after slimmed ntuples
-MinEta=0
+MinEta=1.24
 MaxEta=2.4
 MaxHLTIso=0.15
-MaxMll=110
-MinMll=70
+MaxMll=120
+MinMll=60

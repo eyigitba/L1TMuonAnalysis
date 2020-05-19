@@ -2,9 +2,9 @@
 #######################Tag Muon Cuts#######################################
 ####comments start with "#" in a separate line e.g.
 #comment
-MinEta=0
+MinEta=1.24
 MaxEta=2.4
-MinPt=25
+MinPt=24
 MaxHLTIso=0.25
 MaxHLTDrCone=0.3
-MaxDRL1RecoCone=0.3
+MaxDrL1RecoCone=0.3

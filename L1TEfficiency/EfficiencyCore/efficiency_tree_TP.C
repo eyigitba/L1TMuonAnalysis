@@ -28,15 +28,23 @@ int efficiency_tree_TP(TString file="skata",int start=0,int end=1000, TString na
  
   // read data/mc from ugmt
   TString L1tree= "l1UpgradeTree/L1UpgradeTree";
-  if (emul) L1tree= "l1UpgradeEmuTree/L1UpgradeTree";
+  // if (emul) L1tree= "l1UpgradeEmuTree/L1UpgradeTree";
 
   // read also tf outputs
   TString TFtree="l1UpgradeTfMuonTree/L1UpgradeTfMuonTree";
   if (emul) TFtree="l1UpgradeTfMuonEmuTree/L1UpgradeTfMuonTree";
+
+  TString GenTree="l1GeneratorTree/L1GenTree";
+
+
+  if(emul) cout << "Using emulator" << endl;
+  cout << "Using TF = " << TF << endl;
   
   TChain*cc_l1=new TChain(L1tree);
   TChain*cc_reco=new TChain("l1MuonRecoTree/Muon2RecoTree");
   TChain*cc_tf=new TChain(TFtree);
+  TChain*cc_gen=new TChain(GenTree);
+
 
   std::ifstream file2(file);
   std::string str;
@@ -50,6 +58,7 @@ int efficiency_tree_TP(TString file="skata",int start=0,int end=1000, TString na
     cc_l1->Add(str2);
     cc_reco->Add(str2);
     cc_tf->Add(str2);
+    cc_gen->Add(str2);
   }
 
 
@@ -59,6 +68,13 @@ int efficiency_tree_TP(TString file="skata",int start=0,int end=1000, TString na
   //reading cuts
   CutReader tagCuts(TagCuts);
   CutReader probeCuts(ProbeCuts);
+
+  cout<<"tag cuts eta: " << tagCuts.maxEta() << endl;
+  cout<<"tag cuts eta: " << tagCuts.minEta() << endl;
+  cout<<"tag cuts iso: " << tagCuts.hltIso() << endl;
+  cout<<"tag cuts maxHLTDrCone: " << tagCuts.maxHLTDrCone() << endl;
+  cout<<"tag cuts pt: " << tagCuts.minPt() << endl;
+
 
   float pt_tag, eta_tag, phi_tag, minDRtagl1, isotag, pt_l1tag, eta_l1tag,
         phi_l1tag, DRtagl1;
@@ -76,6 +92,7 @@ int efficiency_tree_TP(TString file="skata",int start=0,int end=1000, TString na
   t1->Branch("phi_l1tag",& phi_l1tag);
   t1->Branch("DR_l1tag",& DRtagl1);
 
+
   t1->Branch("pt_probe",& pt_probe);
   t1->Branch("eta_probe",& eta_probe);
   t1->Branch("phi_probe",& phi_probe);
@@ -88,8 +105,8 @@ int efficiency_tree_TP(TString file="skata",int start=0,int end=1000, TString na
   t1->Branch("DR_tag_probe",& DRtagprobe);
 
   TTreeReader tfReader(cc_tf);
-  TTreeReaderValue<L1Analysis::L1AnalysisL1UpgradeTfMuonDataFormat> bmtf(tfReader,"L1UpgradeBmtfMuon");
-  TTreeReaderValue<L1Analysis::L1AnalysisL1UpgradeTfMuonDataFormat> omtf(tfReader,"L1UpgradeOmtfMuon");
+  // TTreeReaderValue<L1Analysis::L1AnalysisL1UpgradeTfMuonDataFormat> bmtf(tfReader,"L1UpgradeBmtfMuon");
+  // TTreeReaderValue<L1Analysis::L1AnalysisL1UpgradeTfMuonDataFormat> omtf(tfReader,"L1UpgradeOmtfMuon");
   TTreeReaderValue<L1Analysis::L1AnalysisL1UpgradeTfMuonDataFormat> emtf(tfReader,"L1UpgradeEmtfMuon");
 
   TTreeReader gmtReader(cc_l1);
@@ -107,15 +124,26 @@ int efficiency_tree_TP(TString file="skata",int start=0,int end=1000, TString na
   TTreeReaderArray<float> phireco(recoReader,"phi");
   TTreeReaderArray<int> chargereco(recoReader,"charge");
   TTreeReaderArray<bool> tightreco(recoReader,"isTightMuon");
+  TTreeReaderArray<bool> mediumreco(recoReader,"isMediumMuon");
   TTreeReaderArray<float> isoreco(recoReader,"iso");
   TTreeReaderArray<short> hlt_mu(recoReader,"hlt_isomu");
   TTreeReaderArray<float> hlt_DR(recoReader,"hlt_isoDeltaR");
+
+  TTreeReader genReader(cc_gen);
+  TTreeReaderValue<int> genparts(genReader,"nPart");
+  TTreeReaderArray<float> genpt(genReader,"partPt");
+  TTreeReaderArray<float> geneta(genReader,"partEta");
+  TTreeReaderArray<float> genphi(genReader,"partPhi");
+  // TTreeReaderArray<float> genvx(genReader,"partVx");
+  // TTreeReaderArray<float> genvy(genReader,"partVy");
+  // TTreeReaderArray<float> genvz(genReader,"partVz");
+  TTreeReaderArray<int> genID(genReader,"partId");
 
 
   cout<<"total evts to process "<<cc_reco->GetEntries()<<endl;
 
   int evt=0;
-  while(recoReader.Next() && gmtReader.Next()){
+  while(recoReader.Next() && gmtReader.Next() && genReader.Next()){
 
     if (evt%1000==0) cout<<evt<<endl;
 
@@ -137,35 +165,39 @@ int efficiency_tree_TP(TString file="skata",int start=0,int end=1000, TString na
     std::vector<unsigned int> tagindex, probeindex;
 
     for (unsigned int j=0; j<*numreco; j++){
-
       if(fabs(etareco[j])>tagCuts.maxEta()) continue;
       if(fabs(etareco[j])<tagCuts.minEta()) continue;
-      if(!tightreco[j]) continue; 
+      // if(!tightreco[j]) continue; 
+      if(!mediumreco[j]) continue; 
       if (isoreco[j]>=tagCuts.hltIso()) continue;
-      if (hlt_mu[j]!=1) continue;
-      if (hlt_DR[j]>=tagCuts.maxHLTDrCone()) continue;
+      // if (hlt_mu[j]!=1) continue;
+      // if (hlt_DR[j]>=tagCuts.maxHLTDrCone()) continue;
       if (ptreco[j]<tagCuts.minPt()) continue;
       tagindex.push_back(j);
     }
 
     if (tagindex.size()==0) continue;
-
+    
     // find good probes
     for (unsigned int j=0; j<*numreco; j++){
       if(fabs(etareco[j])>probeCuts.maxEta()) continue;
       if(fabs(etareco[j])<probeCuts.minEta()) continue;
-      if(!tightreco[j]) continue; 
+      // if(!tightreco[j]) continue; 
+      if(!mediumreco[j]) continue; 
       if (isoreco[j]>=probeCuts.hltIso()) continue;
       probeindex.push_back(j);
     }
 
+    // if (probeindex.size()==0) cout << "No probe!" << endl;
     if (probeindex.size()==0) continue;
 
     // match tag mu to l1 mu
     std::vector<std::pair<unsigned int,unsigned int>> l1tagpair;
     for (unsigned int it=0; it<tagindex.size(); it++){
       unsigned int itag=tagindex[it];
-      std::vector<std::pair<int,float>>  mupairs= RecoL1tag_Pair((*(&l1mubx)),(*(&l1muqual)),11,etareco[itag],phireco[itag],(*(&l1mueta)),(*(&l1muphi)));
+      std::vector<std::pair<int,float>>  mupairs;
+      if (TF == "emtf") mupairs= RecoTFtag_Pair(emtf->tfMuonBx,emtf->tfMuonHwQual,11,etareco[itag],phireco[itag],emtf->tfMuonHwEta,emtf->tfMuonGlobalPhi);
+      else mupairs= RecoL1tag_Pair((*(&l1mubx)),(*(&l1muqual)),11,etareco[itag],phireco[itag],(*(&l1mueta)),(*(&l1muphi)));
       if(mupairs.size()==0) continue;
       std::sort(mupairs.begin(),mupairs.end(),sort_vintpair_lowHigh);
       if (mupairs[0].second>tagCuts.maxdrL1RecoCone()) continue;
@@ -179,11 +211,18 @@ int efficiency_tree_TP(TString file="skata",int start=0,int end=1000, TString na
       pt_tag=ptreco[itag]; 
       eta_tag=etareco[itag]; 
       phi_tag=phireco[itag]; 
-      isotag=isoreco[itag]; 
-      pt_l1tag=l1mupt[il1];
-      eta_l1tag=l1mueta[il1]; 
-      phi_l1tag=l1muphi[il1];
-      DRtagl1=matchDR(etareco[itag],phireco[itag],l1mueta[il1],l1muphi[il1]);
+      isotag=isoreco[itag];
+      if (TF == "emtf"){
+        pt_l1tag=emtf->tfMuonHwPt[il1]*0.5;
+        eta_l1tag=global_eta(static_cast<float>(emtf->tfMuonHwEta[il1])); 
+        phi_l1tag=global_phi(static_cast<float>(emtf->tfMuonGlobalPhi[il1]));  
+      } 
+      else{
+        pt_l1tag=l1mupt[il1];
+        eta_l1tag=l1mueta[il1]; 
+        phi_l1tag=l1muphi[il1];
+      }
+      DRtagl1=matchDR(etareco[itag],phireco[itag],eta_l1tag,phi_l1tag);
       TLorentzVector muTag; 
       muTag.SetPtEtaPhiM(ptreco[itag],etareco[itag],phireco[itag],0.105);
       // loop on probes
@@ -208,11 +247,11 @@ int efficiency_tree_TP(TString file="skata",int start=0,int end=1000, TString na
         std::vector<std::pair<struct l1muon,float>>  mupairs;
 
         // match muons from TF or ugmt
-        if (TF=="bmtf")
-           mupairs= RecoTF_Pairs(bmtf->tfMuonBx,bmtf->tfMuonHwQual,etareco[iprobe],phireco[iprobe],bmtf->tfMuonHwPt,bmtf->tfMuonHwEta,bmtf->tfMuonGlobalPhi);
-        else if (TF=="omtf")
-           mupairs= RecoTF_Pairs(omtf->tfMuonBx,omtf->tfMuonHwQual,etareco[iprobe],phireco[iprobe],omtf->tfMuonHwPt,omtf->tfMuonHwEta,omtf->tfMuonGlobalPhi);
-        else if (TF=="emtf")
+        // if (TF=="bmtf")
+           // mupairs= RecoTF_Pairs(bmtf->tfMuonBx,bmtf->tfMuonHwQual,etareco[iprobe],phireco[iprobe],bmtf->tfMuonHwPt,bmtf->tfMuonHwEta,bmtf->tfMuonGlobalPhi);
+        // else if (TF=="omtf")
+           // mupairs= RecoTF_Pairs(omtf->tfMuonBx,omtf->tfMuonHwQual,etareco[iprobe],phireco[iprobe],omtf->tfMuonHwPt,omtf->tfMuonHwEta,omtf->tfMuonGlobalPhi);
+        if (TF=="emtf")
            mupairs= RecoTF_Pairs(emtf->tfMuonBx,emtf->tfMuonHwQual,etareco[iprobe],phireco[iprobe],emtf->tfMuonHwPt,emtf->tfMuonHwEta,emtf->tfMuonGlobalPhi);
         else
            mupairs= RecoL1_Pairs(il1,(*(&l1mubx)),(*(&l1muqual)),etareco[iprobe],phireco[iprobe],(*(&l1mupt)),(*(&l1mueta)),(*(&l1muphi)));     

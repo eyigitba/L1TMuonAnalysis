@@ -132,7 +132,12 @@ void transform( TH1F * heff, std::string kwds){
 
 TH1F * gethisto(TChain * cc,std::string var,std::string cuts, std::string name, int bins, float start, float end){
   TString name2(name);
- TH1F * htemp=new TH1F(name2,"#font[22]{CMS} #font[12]{Preliminary}",bins,start,end);
+  TH1F *htemp;
+  Double_t etaArray[15] = {-2.5, -2.1, -1.6, -1.2, -0.9, -0.3, -0.2, 0, 0.2, 0.3, 0.9, 1.2, 1.6, 2.1, 2.5};
+  Double_t ptArray[7] = {0, 12, 17, 22, 27, 50, 100};
+ if(name2.Contains("l1muoneta")) htemp=new TH1F(name2,"#font[22]{CMS} #font[12]{Preliminary}",14,etaArray);
+ else if(name2.Contains("l1muonpt")) htemp=new TH1F(name2,"#font[22]{CMS} #font[12]{Preliminary}",6,ptArray);
+ else htemp=new TH1F(name2,"#font[22]{CMS} #font[12]{Preliminary}",bins,start,end);
  TString var2(var+">>"+name);
  TString cuts2(cuts);
  cc->Draw(var2,cuts2);
